@@ -12,5 +12,4 @@ SPEC = Gem::Specification.new do |s|
   s.test_file = 'test/dynamime_test.rb'
   s.has_rdoc  = true
   s.require_path = 'lib'
-  s.extra_rdoc_files = ['README']
 end
