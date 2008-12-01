@@ -1,0 +1,119 @@
+= Dynamime
+
+Rails allows the creation of MIME type aliases to render different versions of HTML
+templates for different client devices. Dynamime extends this by adding automatic
+device detection using the client browser's user agent string (inspired by Brendan
+Lim's Mobile Fu plugin) and the possibility to build a use cascading "tree" of device
+types.
+If e.g. a subset of mobile devices has special needs regarding some aspects of a view,
+one can create special views for those devices while using more generic views for
+other mobile devices. It is however not required to define views for every device type,
+since Dynamime will try to render a more generic template if a specific one is
+not found.
+
+== Setting up Dynamime
+
+You can install Dynamime by running:
+
+    ruby script/plugin install git://github.com/wvk/dynamime.git
+
+After installing, you first have to create some models/tables needed by Dynamime.
+You can do that by running
+
+    ruby script/generate dynamime_migration
+    rake db:migrate
+
+The entities being created are:
+
+* +Browser+
+* +HardwarePlatform+
+* +UserAgent+
+
+This also creates a set of corresponding migrations in /db/migrate and
+some database fixtures in /db/fixtures. These fixtures represent a sensible
+minimum of working data, so it's probably best if you run
+
+    rake db:fixture:load FIXTURES=browsers,hardware_platforms,user_agents
+
+after that. Of course, you are free to add many more entries. One possibility
+is to use the included WURFL extractor rails task that reads WURFL compatible
+XML files into the database. See documentation on WurflImporter for that.
+
+== Usage
+
+Add this this line to the controller.
+
+    class ApplicationController < ActionController::Base
+      use_device_dependent_views
+    end
+
+Requests coming from devices that are recognized as being special in some way
+(i.e. there is a user agent string in the database that unambiuously identifies
+the browser) the request format is set to whatever the view_mime_type of that
+user agent is set to.
+
+You can register allowed Dynamime types just as you register ordinary Mime types.
+However, Dynamime uses a cascading tree structure with fallback views for its
+types. This means that you only have to specify views for special devices if they
+really need an own view. If Dynamime detects e.g a mobile device that only uses
+a special view for one view, the other views are still rendered with its "parent"
+type, usually 'Mime::HTML'.
+
+Consider the following line in config/initializers/mime_types.rb:
+
+    Dynamime::Type.register :mobile, :html, 'application/vnd.wap.xhtml+xml'
+
+If a mobile device is detected (see below) an it requests e.g. /users/1,
+Dynamime will now look for a view template called /app/views/users/show.mobile.erb
+and render it. If that template is not found, it will try to render
+/app/views/users/show.html.erb before failing, if that one isn't found either.
+
+You can cascade this tree further like in the following example:
+
+    Dynamime::Type.register :mobile,    :html,     'application/xhtml+xml'
+    Dynamime::Type.register :nokia_s60, :mobile
+    Dynamime::Type.register :nokia_n95, :nokia_s60
+
+The MIME type string (will bes sent as "Content-Type:" in the response header)
+is inherited from the "parent" type of a Dynamime::Type if not specified.
+
+Dynamime works just as well with `respond_to` as with explicit `render`
+methods.
+
+    # in UsersController
+    def show
+      # ... your app logic
+      respond_to do |format|
+        format.mobile
+        format.nokia_s60
+        format.nokia_n95
+      end
+    end
+
+Since it would be potentially tedious to explicitely list all supported device
+dependent format.<device>-lines, dynamime does what it is expected to do when
+simply using a `format.html` statement. It then creates a responder for all
+"subtypes" of the "html" type, e.g:
+
+    # in UsersController
+    def show
+      # ... your app logic
+      respond_to do |format|
+        format.nokia_n95 {...} # special behaviour for this device
+        format.html            # simple render for *all* other devices
+      end
+    end
+
+When using an explicit `render` statement (for actions, partials and the whole
+other zoo), Dynamime also looks for <template name>.<detected device>.erb and
+uses the same cascading.
+
+== Testing dynamimed Views
+
+Just as usual if you want to force Rails into using a special format,
+simply append the format to the url like /users/1.opera_mobile
+Dynamime will not try to determine the client's user agent for requests
+with an enforced format.
+
+Written by Willem van Kerkhof for Vodafone Global Services
+released under the MIT license

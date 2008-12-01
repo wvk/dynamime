@@ -1,0 +1,53 @@
+opera_wm_on_s60:
+  substring: WidgetManager; unknown/0x10; Opera/9.5 (S60
+  browser: opera_wm
+  hardware_platform: nokia_s60
+  view_platform: mobile
+
+opera_mobile_on_s60:
+  substring: Opera/9.5 (S60; Symbian OS; U; de; Opera Mobile
+  browser: opera_mobile
+  hardware_platform: nokia_s60
+  view_platform: mobile
+
+nokia_browser_on_n73:
+  substring: Nokia
+  browser: nokia
+  hardware_platform: nokia_n73
+  view_platform: nokia_n73
+
+ff_on_linux:
+  substring: Firefox
+  browser: ff
+  hardware_platform: pc
+  view_platform: html
+
+ff_on_windows:
+  substring: Firefox
+  browser: ff
+  hardware_platform: windows
+  view_platform: html
+
+ie7_on_windows:
+  substring: Mozilla/4.0 (compatible; MSIE 7.0; Windows
+  browser: msie7
+  hardware_platform: windows
+  view_platform: msie
+
+safari_on_mac:
+  substring: KHTML
+  browser: apple_webkit
+  hardware_platform: pc
+  view_platform: html
+
+ff_on_mac:
+  substring: Firefox Mac
+  browser: apple_webkit
+  hardware_platform: mac
+  view_platform: html
+
+unknown:
+  substring: ''
+  browser: unknown
+  hardware_platform: unknown
+  view_platform: html

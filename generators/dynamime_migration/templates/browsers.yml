@@ -1,0 +1,33 @@
+unknown:
+  name: Generic Browser
+
+ff:
+  name: Firefox
+
+msie6:
+  name: MSIE 6
+
+msie7:
+  name: MSIE 7
+
+msie7:
+  name: MSIE 8
+
+opera:
+  name: Opera Desktop
+
+desktop:
+  name: Generic Desktop Browser
+
+apple_webkit:
+  name: Apple Webkit
+
+nokia:
+  name: Nokia Browser
+
+opera_wm:
+  name: Opera Widget Manager
+
+opera_mobile:
+  name: Opera Mobile
+

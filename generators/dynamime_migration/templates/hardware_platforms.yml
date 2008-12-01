@@ -1,0 +1,23 @@
+unknown:
+  name: Generic Platform
+
+pc:
+  name: PC with Linux
+
+mac:
+  name: MacOS
+
+windows:
+  name: PC with Windows
+
+mobile:
+  name: Generic Mobile Platform
+
+nokia_s60:
+  name: Nokia Series60 Handset
+
+nokia_n73:
+  name: Nokia N73 (Series60) Handset
+
+nokia_n95:
+  name: Nokia N95 (Series60) Handset
