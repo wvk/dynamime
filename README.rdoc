@@ -115,5 +115,5 @@ simply append the format to the url like /users/1.opera_mobile
 Dynamime will not try to determine the client's user agent for requests
 with an enforced format.
 
-Written by Willem van Kerkhof for Vodafone Global Services
+Written by Willem van Kerkhof for Vodafone Group Services
 released under the MIT license

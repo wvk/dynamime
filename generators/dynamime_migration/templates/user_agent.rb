@@ -20,9 +20,6 @@ class UserAgent < ActiveRecord::Base
   end
 
   def full_name
-    '%{browser_name} on %{hardware_platform_name}' % {
-      :browser_name           => browser.name,
-      :hardware_platform_name => hardware_platform.name
-    }
+    '%s on %s' % [browser.name, hardware_platform.name]
   end
 end
