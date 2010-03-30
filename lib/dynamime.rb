@@ -193,8 +193,8 @@ module Dynamime
                                              :view_mime_type    => Dynamime::HTML)
 
         @current_user_agent ||= UserAgent.find(:first,
-                                               :conditions => "'#{current_user_agent_string}' LIKE CONCAT('%', `substring`, '%')",
-                                               :order      => 'LENGTH(`substring`) DESC') || @@generic_user_agent
+                                               :conditions => "substring LIKE '%#{current_user_agent_string}%'",
+                                               :order      => 'LENGTH(substring) DESC') || @@generic_user_agent
       end
     end
 
